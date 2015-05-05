@@ -1,0 +1,49 @@
+guybrush
+
+
+
+
+=============================
+=      File description     =
+=============================
+ProductType.java - implements the ProductType class.
+Store.java - implements the Store class.
+customer.java - implements the Customer class.
+
+
+
+=============================
+=          Design           =
+=============================
+I implemented inside the Store class another private method named 
+findProductPositionInArray(productTypeName) which returns an integer with the
+position of the productName in the store array or -1 if not found.
+I chose this way to avoid code repetition in the last 3 methods:
+	sellsProductsOfType
+	removeProductTypeFromStore
+	makePurchase
+which all affect and search for a singular product and according to the answers
+in the forum given to us. 
+Once the position is found it is evaluated (wheter -1 or number) and used 
+accordingly.
+
+Except for that i tried to remain within the API boundaries for each class.
+
+
+
+=============================
+=  Implementation details   =
+=============================
+I chose not to implement any serious programming methods such as sorts or 
+binarySearch because we work with a small array of 5 so i simply ran over it
+and searched for the products.
+
+In all classes if a value given was a negative or a null, default values were
+used accordingly and to the forums' answers. I also tried to make each method
+handle such exceptions.
+
+
+=============================
+=    Answers to questions   =
+=============================
+

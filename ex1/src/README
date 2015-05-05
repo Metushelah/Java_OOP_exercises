@@ -1,0 +1,60 @@
+guybrush
+
+nadav unique, yvgenia, yakov
+
+
+=============================
+=      File description     =
+=============================
+Board.java          - implements the Board class.
+Player.java         - implements the Player class.
+Competition.java    - implements the Competition class which runs the game.
+Move.java           - implements the Move class.
+README              -this file
+
+
+
+
+=============================
+=          Design           =
+=============================
+I chose to design the game in such a way that the Competition class will hold
+most of the items and will be the main source that calls to other classes and
+follows and keeps the game running.
+The Competition class creates the 2 players that will play the game, checks if
+any of them is a 'Human player' to see if messages are needed and from there
+starts the game running for as many rounds and needed.
+
+Each player on their turn returns a move and if that move is not accepted by
+the board then the Competition class requests that player to make a new move.
+
+
+
+
+=============================
+=  Implementation details   =
+=============================
+I had real problems implementing the Smart method here. At first i tried
+dealing with different cases but it proved too difficult, than i thought of 
+solving it with a reverse NimGame sums, but it too became too difficult when
+the number of different cases or groups became hard for me to implement.
+
+SO, in the end, after and idea Nadav gave me, i chose to deal with a small set
+of cases i now i can win in, as the instructions asked for greater winning over
+random. I chose to deal only in the case where i have 1 row left and otherwise 
+act as the random player.
+If we got to the part where we only have 1 row left than we need to check 3
+cases:
+1 - if there is only 1 stick left in the game then obviusly return it.
+2 - there are more than 1 left, and they are all grouped togather, then we
+return all but 1.
+3 - there are more than 1 left, and there are 2 groups of 1 and the rest, then
+we need to delete the biggest group so that random will choose the last one.
+
+
+
+
+=============================
+=    Answers to questions   =
+=============================
+
