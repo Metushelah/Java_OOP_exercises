@@ -1,0 +1,67 @@
+guybrush
+
+
+
+
+=============================
+=      File description     =
+=============================
+SpaceShip.java -            - The main class which implements a spaceship behaviours.
+                                All other classes of space ships inherit from this.
+SpaceShipAggressive.java    - implements the Aggressive type space ship.
+SpaceShipBasher.java        - implements the Basher type space ship.
+SpaceShipDrunk.java         - implements the Drunk type space ship.
+SpaceShipHuman.java         - implements the Human type space ship.
+SpaceShipRunner.java        - implements the Runner type space ship.
+SpaceShipSpecial.java       - implements the Special type space ship.
+SpaceShipFactory.java       - This class creates an array of spaceships to hold for
+                                the game engine.
+
+
+
+=============================
+=          Design           =
+=============================
+I chose to implement the spaceships via inheritance from an abstract class
+because i saw most of them will be using the same methods and behaviours and
+only their choices of when to use those behaviours is what changed, thus the
+abstract method "doAction(game)". This way i could make minimal changes in any
+ship necessary to update to the different behaviour.
+
+Extensibility: you can take those functions and override them if you chose
+                or using them in many other different spaceships.
+                
+Modularity: The code is somewhat modular. While it is specific to the constants
+                provided in the documents you can still change them and override
+                them as seen in Human spaceShip where the image is a different one.
+                
+Intuitiveness and Understandability: I think it will be quite understanable and
+                each method can be used in and of it self. The main issue is the
+                need to use reset in the extending spaceships to create a physics
+                for the space ship and the use of roundUpdate in the begining of
+                each round to function properly.
+                
+Sensible representation of the classes: It's quite simple where you have one
+                main spaceship which acts in a default manner which you can use
+                or override it and you choose your own behaviour so it's easy.
+
+
+
+=============================
+=  Implementation details   =
+=============================
+I implemented this by using one main abstract ship type which extends into other
+smaller types of ships each with it's own behaviour.
+
+Drunk spaceship - is using a cascading switch case to choose what action to take,
+                    mainly will move left like a drunk person.
+
+Special spaceship - will try and follow you like the aggressive ship but will
+                    hijack the gameGUI and create doubles of it to confuse you
+                    and shout DEATH DEATH DEATH !!! in the game text.
+
+
+=============================
+=    Answers to questions   =
+=============================
+
