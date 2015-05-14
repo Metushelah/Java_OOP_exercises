@@ -1,0 +1,78 @@
+#Week 4 Questions
+#============
+
+#Choose the correct statement:
+#1: interfaces are a special case of abstract classes
+#2: interfaces can implement non-abstract (instantiable) classes
+#3: interfaces can extend other interfaces
+#4: interfaces can only include abstract methods as members
+
+w4Answer1 = 0
+# optional explanation.
+
+#Choose the correct statement:
+#1: abstract classes are immutable
+#2: abstract classes may only contain public members
+#3: ANY class that extends an abstract class must implement all its abstract methods
+#4: an abstract class may contain a constructor
+
+w4Answer2 = 0
+# optional explanation.
+
+#Choose all correct statements:
+#1: An interface can have no private members
+#2: An interface is non-instantiable but can include partial implementation
+#3: An abstract class may not implement interfaces
+#4: There may be a reference whose type is an abstract class
+#5: There may not be a reference whose type is an interface
+#6: A class may extend any number of abstract classes
+#7: Protected data members can be declared as abstract
+#8: Every class with abstract methods must be abstract
+
+w4Answer3 = (0,0)
+# The answer should be a python-tuple of the chosen numbers, i.e. (1,7,3,8) or (2,6,1)
+# optional explanation.
+
+
+#Week 5 Questions
+#============
+
+#class A { }
+#class B extends A { }
+#Select all lines that will pass compilation
+#1: A a = (B) new B();
+#2: A a = (A) new B();
+#3: B b = (B) new A();
+#4: B b = (A) new B();
+#5: A a = (B) new A();
+#6: A a = (A) new A();
+#7: A a = new B();
+#8: B b = new A();
+
+w5Answer1 = (0,0)
+# optional explanation.
+
+#Which of the following might fail at runtime? (single choice)
+#1: explicit up-casting
+#2: implicit up-casting
+#3: explicit down-casting
+#4: implicit down-casting
+
+w5Answer2 = 0
+# optional explanation.
+
+#Using instanceof can help prevent compilation errors.
+#1: Correct
+#2: Incorrect
+
+w5Answer3 = 0
+# optional explanation.
+
+#Which of the following is true? (single choice)
+#1: Delegation necessarily implies composition
+#2: Facade necessarily implies composition
+#3: Delegation necessarily implies inheritance
+#4: Facade necessarily implies inheritance
+
+w5Answer4 = 0
+# optional explanation.

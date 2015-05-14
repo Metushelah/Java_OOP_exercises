@@ -1,0 +1,51 @@
+guybrush
+
+
+
+
+=============================
+=      File description     =
+=============================
+SimpleHashSet.java      -   contains the abstract class implementing SimpleSet.
+OpenHashSet.java        -   a class implementing OpenHashSet design
+ChainedHashSet.java     -   a class implementing ChainedHashSet (linkedList) design.
+CollectionFacadeSet.java    -   A general collection masquarading a Set.
+SimpleSetPerformanceAnalyzer.java   -   The performance Analyzer class
+README                  -   This file
+RESULTS                 -   An empty file of results, i am sorry i failed to complete that
+                            in time.
+QUESTIONS               -   An empty file of questions, i am sorry i failed to complete that
+                            in time.
+
+
+
+=============================
+=          Design           =
+=============================
+I decided implement ChainedHashSet using the CollectionFacade as to not create another
+new class for it. This Facade masquaraded the LinkedList's inside each bucket.
+
+In OpenHashSet i implemented the deletion using a flag string which compared to as
+and object and if i found it then it acted like a null in the system. 
+
+
+
+=============================
+=  Implementation details   =
+=============================
+The answer above.
+
+i somehow failed each time in the last test when trying to delete "hello" but i
+dont know why.
+
+
+=============================
+=    Answers to questions   =
+=============================
+I failed to make results and analyze them because of lack of time, on my part
+unfortunately. I suffered from a Chronic Procrastination attack and started the
+exercise of the last day of the late submission. I am sorry, this is not because
+i do not respect you or something of the sort, this is a problem with me and
+i am sorry i couldn't complete it on time, i hope you will understand.
+
+
