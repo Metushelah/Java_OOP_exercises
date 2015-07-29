@@ -1,0 +1,239 @@
+orrp
+guybrush
+
+
+TODO:
+- address a new instance of MainScope singleton and use of init.
+
+
+=============================
+=      File description     =
+=============================
+
+README - this
+QUESTIONS - file containing answers to the questions.
+
+Tester.java - a simple test we wrote to run the school provided tests locally.
+Sjavac.java - the main program that receives a file and parses it according to Sjava rules.
+Parser.java - represents the parser that reads the file and compares to Sjava syntax.
+MyReader.java - an interface representing the way to read the file (line by line).
+MainReader.java - represents a reader for the MainScope in the program.
+BodyReader.java - represents a reader for the secondary scopes in the program.
+MainScope.java - represents the main scope of the program. The most first scope. Extends scope.
+Scope.java - represents any other scope that can come after MainScope. 
+Method.java - represent the way methods are stored in our Sjava.
+MethodFactory.java - creates a method.
+VariableFactory.java - creates a variable.
+VarType.java - an enum with the different types of variables that are supported.
+Variable.java - represents the way a variable is built in our Sjava.
+
+SJavaException.java - represents the main exception regarding any error in the code via Sjava error.
+BadControlFlowStatementException.java - represents an exception related to bad controlFlow statement.
+BadLiteralExcepetion.java - represents an exception related to value not according to any type known.
+BadMethodCallException.java - represents an exception related to bad way to call for a method.
+BadMethodDeclarationException.java - represents an exception related to bad method declaration.
+BadVariableDeclarationException.java - represents an exception related to bad variable declaration.
+UnexpectedCharacterException.java - represents an exception related to characters not following correct syntax.
+UnexpectedEndOfBlockException.java - represents an exception related to scope closures not in place.
+UnexpectedEOLExcpetion.java - represents an exception related to bad sentence syntax, too few tokens.
+UnrecognizedSyntaxException.java - represents an exception related to unrecognised tokens.
+IllegalArgumentException.java - represents an exception related to incorrect arguments provided.
+MethodAlreadyDeclaredException.java - represents an exception related to declaring a method which was
+					already declared with the same name.
+ScopeException.java - represents an exception related to scope related exception.
+UndeclaredAssignmentException.java - represents an exception related to assigning to an undeclared variable.
+UndeclaredMethodCallException.java - represents an exception related to calling an undeclared method.
+VariableAlreadyDeclaredException.java - represents an exception related to trying to declare a variable with
+					a name of an already declared variable.
+IllegalValueExcpetion.java - represents an exception related to providing an illegal value in assignment.
+TypeNotFoundException.java - represents an exception related to trying to declare with unsupported type.
+UnassignedFinalException.java - represents an exception related to declaring a final variable without 
+					assigning a value right after.
+VariableException.java - represents an exception encapsulating the other variable exceptions.
+
+
+
+=============================
+=          Design           =
+=============================
+
+We chose to implement this exercise as a parser tool that holds the different calling sequences to
+call for some predefined function of tool (declare variable, call method, etc.).
+This Parser tool goes over each line of code and tries to compare it to known sequences according to
+Sjava conventions, if he finds a correct sequence he calls for that tool to activate.
+The reading of the line is done by reading tokens, so we separate all the words and other symbols
+(e.g. ;, { ) with a space and then trim and split the line into a String array to hold the tokens. 
+It good to note that when we start reading each token, we start the string sequnce from "-1" as the
+method "nextToken()" returns the next token in the sequence. We do it like this because of "do-while"
+loops we have and inorder to be able to evaluate too short or too long lines.
+ 
+So far we implemented  3 different tools(methods, scopes, variables) and decided to allow each tool
+to verify himself this leaving the parser to only remember character sequnces while the comparation
+is done inside the tool.
+
+1) scopes - as with normal java, so does Sjava has different scopes in it’s syntax which effects
+differently the behaviour of some of the components (a variable declared in an inner scope can
+override a variable declared in an outer scope, etc.). We created a Scope class that holds the
+different variables in a hashMap for easy search and adding and each new scope created is added
+as a new link in a “linked list” of scopes until it is closed (in this case the link is removed).
+This way from the MainScope, the first scope of the program, we add a new scope each time we enter
+a new method or a conditional until that scope ends and we collapse it back into it’s “parent” scope.
+This allows us to retain and use information (variables and methods declared) from previous scopes
+but at the same time delete changes made in those temporal inner scopes. 
+We noticed while reading the instructions that changes in inner scopes do not carry over backwards
+(to some degree) and therefore it seemed as the best way to handle those changes.
+
+When searching for a variable, each scope holds his own list of variables and searches inside it
+and if not found then goes backwards to it’s parent scope to find a variable there and so forth.
+
+MainScope is a special scope in this regard as it is the root of all other scopes and is single
+in each file to be ran. It is also the only scope that can hold method declaration, so for easy 
+retrival we made him a singleton and we refer and call on him each time we try to compare method calls.
+It is special to note that changes in one method in a global variable shouldn’t carry over to the 
+next method unless it was assigned already (we will refer to variable assignment later in this doc)
+so we had to retain at the end of parsing the main scope all unsigned globals so we could revert 
+changes made to them back at the closure of a method’s body.
+MainScope extends the normal scope but adds another HashMap to retain Methods declared.
+
+2) Variables - in this regard at first we thought of making a different class to each variable
+and each will extend a typical variable class but than we saw that in this case there was no real
+value in implementing each variable as a different class as the only thing that changed was it’s type.
+It’s also useful to note that we do not compile in this exercise and didn’t need to implement operators
+and their correct use (no division by 0 etc.) therefore we didn’t really care for retaining the value
+given to each variable (we only needed to check that it was of a matching type) so we held each value
+given as a boolean signifying isAssigned.
+Thus we created a single class of Variable holding those values and an Enum class holding the different
+types of variables we can create. That enum held the regex needed to compare whether values were correct,
+it’s declaration name and a default value for when we create a variable inside a method's signiture.
+
+This Variable class holds the different attributes but each variable was created via a VariableFactory
+that connected that VarType Class with the Variable Class. 
+
+3) Methods - to implement methods, because of some of the difficulties specified above, we decided to
+allow each method to retain it’s declaration signature (to compare to when a method is called) but 
+also retain a copy of it’s body so we could parse it only AFTER we first finished parsing the 
+MainScope (It also makes sense to hold each method as a small program of it’s own). To save the
+signiture we needed to copy the parameters declared but they weren't provided with a value even though
+they can be specified with a "final". To be able to still use the Variable class we created, we had
+to give each parameter a "default-value" so it would think it was correctly initialised (methods 
+receive initialised variables or literal values when called therefore we can assume that each such
+parameter will be initialised).
+It is also important to note that methods as well as conditionals can receive literal values (5, true)
+and we need to assess them, therefore we turn each such value into a dummy variable with a matching 
+type and we name them with a number (as no variable name can be named a number) so they will not 
+conflict with existing or potential future variables and then assess the condition or method as they
+received variables from the begining.
+
+
+These 3 tools we implemented, had to communicate well with one another and it works via the parser. 
+The parser is the only one capable of “understanding” the different lines and thus know which tool 
+to call on next. e.g: should he check if a scope is being closed correctly? should he try to declare
+a variable? should he declared a method? is he in the right scope to try and declare a method? etc.
+
+We broke the parser's work into different type of sentences and those themselves can be used 
+differently in each scope, therfore it starts by reading the mainScope until he is done and retained
+all he could using only MainSentences. The Parser then starts going over inner scopes according to 
+innerScopesSentence rules, each time trying to fit the line into a known pattern. This all leads us 
+to the main concept we found for doing this Sjava verification and is a BNF (Bakus Nauer Form) type 
+of reading. We read the Sjava language from left to right each time reading a different token and 
+comparing it to known values.
+We thought this way would be faster than trying to compare using regex for whole sentences and using
+capturing groups, and fit better with the way we saw it in our mind where the program tries to see
+if it's a method declaration, if not "void" then try something else, if it was "void" then method
+declaration is what you meant and from on for that line will assume so.
+
+
+Exceptions - our exceptions relate to each type of tool we implement in this Sjava therefore:
+* Scope Exception relates to errors in opening or closing scopes.
+* Variable exception relates to errors regarding declaration or variable use.
+* Method exception relates to errors regarding method declaration or method calling.
+
+Each such exception heading is being inherited by smaller more precise type of exceptions which
+holds a relevant message to the user but all of them in the end when being thrown upwards are
+caught and transformed to an Sjava exception which is dealt with in the main Sjavac file.
+It will print the relevant message carried over to the screen.
+
+We chose to do it this way because each exception is relevant to that specific tool and so can be 
+carried over to other programs if needed. In this case they are Sjava exceptions.
+
+
+	In addition, you should address the following points in your README file:
+	• How would you modify your code to add new types of variables (e.g., float)?
+	• Below are four features your program currently does not support. Please select two of them, and describe which modifications/extensions you would have to make in your code in order to support them. Please briefly describe which classes you would add to your code, which methods you would add to existing classes, and which classes you would modify. You are not required to implement these features.
+	– switch statements.
+	– Arrays (of any type).
+	– Unary and binary operators.
+	– Importing the methods and global variable of one s-Java file to the other.
+
+	In your README file, please describe two of the main regular expressions you used in your code.
+Answers:
+6.1
+In order to implement other types of variables we can add another entry to the VarType enum.
+Such entry includes a valueRegex (defines what pattern must this type's values match), the typeName
+and a defaultValue (well defined in regular Java documentation).
+The above is under the assumption that the type's name and value do not expand the existing group
+of supported characters (for example, a type that may contain a literal asterisk (*) will not be
+supported).
+
+6.2
+--Adding arrays--
+Because we are not required to compile the provided source code or perform any other logical
+operations, implementation of an array could use the existing Variable infrastructure:
+The Array class would be decorate the Variable class and add the following:
+A Length attribute - holds the length of the array
+isIndexAssigned(int i) - Returns whether the i-th element has been initialized
+assign(int i) - Assigns the i-th element.
+unAssign(int i) - Unassigns the i-th element (this is used for shadowing globals)
+
+Implementation wise - the class will hold a boolean[] of the specified length, which holds whether
+the i-th element has been assigned.
+
+The parser will also have to be modified so as to expect an array declaration and assignment
+(this implies the addition of some methods but only minor modifications to existing ones).
+
+
+--Adding imports--
+Let us assume we wish to import other.sjava into source.sjava:
+The Parser's source will be modified to first look for all import statements:
+If such a statement is encountered, attempt to parse the other file's main scope (looping over
+mainSentence() ) into the MainScope.
+Frankly, considering this change, perhaps it would make more sense to copy the aformentioned loop
+(which already exists in the parse() method) into a new method - but this was not required for the
+current implementation.
+Parsing the other file requires switching the Parser's reader to MainReader(/path/to/other.sjava),
+and then switching back when that is done.
+
+6.3
+Explain 2 regulars expressions that you use:
+
+
+
+
+
+
+
+
+is this needed???  the next sections.
+
+=============================
+=  Implementation details   =
+=============================
+This section should contain all important comments about
+implementation issues that you think would help understand your code, or should
+be pointed out since they are important in some sense.
+
+
+In the Game class, in order to store the different players, I chose the TreeSet dataset because we perform many
+ insertion and deletion actions on this dataset, actions which a balanced tree performs efficiently.
+
+
+=============================
+=    Answers to questions   =
+=============================
+
+1)
+The smart player picks his moves by simply looking at all the possible valid moves, and picking the 
+one that leaves the opponent with the minimal number of possible steps (and which does not make him lose)
+
+2)
+On the given example, the run time of the TresSet took 0.3445 seconds, While the run time of the HashSet took 0.56547.

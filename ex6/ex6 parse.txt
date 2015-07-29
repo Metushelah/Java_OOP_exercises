@@ -1,0 +1,94 @@
+
+
+
+<sentence> ::= 	(<assignment> | <decVar> | <callMethod>) “;” |
+		(<decMethod> | <if>)
+
+
+<callMethod> ::= <metName> “(“ [<varName>[“,”…]] ”)”
+
+
+
+<decMethod> ::= “void” <metName> “(“ [<decVar>[“,”…]] ”)” “{“ <body> <return> “}”
+
+<body> ::= [<return> “\n”] | [<sentence>(^decMethod)] <body>
+
+
+
+<if> ::= “if” “(“ <conditional> “)” “{“ <_body> “}”
+
+<conditional> ::= (<(bool | int | double) varName> | <(bool | int | double>) [(“||” | “&&”) <conditional>]
+
+
+
+
+
+<decVar> ::= [“final”] <type> (<varName> | <assignment>) [“,” …]
+ 
+<assignment> ::= <varName> “=“ (<varName> | <value>)
+
+
+
+
+<value> ::= STRING_REGEX * <type>
+
+<type> ::= (“int” | “boolean” | “double” | “char” | “string”)
+
+<return> ::= “return” “;” 
+
+<varName> ::= STRING_REGEX
+
+<metName> ::= STRING_REGEX
+
+<comment> ::= “//“ [TEXT] ”\n”
+
+
+
+
+private String[] getLine(){
+	//return StringArray without spaces and each effect divided
+}
+
+
+private void decVar (String[] str, int idx) throws UnrecognizedTypeException(){
+	isFinal = false;
+	Type type;
+
+	// need to notice end of string
+	if (str[idx] == FINAL_CONST)
+		isFinal = true;
+	idx ++;
+	switch(str[idx]){
+		case “int”:	type=INT;
+		break;
+		case “double”:	type=DOUBLE;
+		break;
+		case “boolean”:	type=BOOLEAN;
+		break;
+		case “char”:	type=CHAR;
+		break;
+		case “string”:	type=STRING;
+		break;
+		default:	throw UnrecognizedTypeException();
+	}
+	
+	idx++;
+	
+	//create var, ? does it needs to be assigned a value straight away, differs between instancing an empty var and then using assign
+		or each method, assign and varName will each create a different variable.
+		can varName be part of assign?
+	
+	while (str[idx] == “,”){
+		assignment();
+		varName();
+		
+	}
+}
+
+private void assignment (String str, args[]*){
+	
+}
+
+private void conditional (String str, int idx){
+	if str[idx] == 
+}

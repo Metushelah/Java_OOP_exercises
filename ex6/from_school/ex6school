@@ -1,0 +1,14 @@
+#!/usr/bin/tcsh -f
+
+if ($#argv < 1) then
+        echo "Usage: ~oop/bin/ex6school file.sjava"
+        exit -1
+endif
+
+set fileName = $argv[1]
+set CurrentFolder = /cs/course/2014/oop/bin/
+set dir = $CurrentFolder/ex6_school
+
+chdir $dir
+java oop.ex6.main.Sjavac $fileName
+chdir $PWD
